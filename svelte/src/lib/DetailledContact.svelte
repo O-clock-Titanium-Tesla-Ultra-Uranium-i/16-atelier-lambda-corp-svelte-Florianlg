@@ -2,21 +2,26 @@
     // Export permet de transformer ces variables en attributs du composant
     export let first_name = '';
     export let last_name = '';
+    export let email = '';
+    export let phone_number = '';
+    export let rating = '';
+    export let status = '';
 </script>
 
 
 <!-- Affichage détaillé d'un contact -->
-<!-- TODO : ajouter toutes les valeurs dans le HTML -->
-<artcile class="">
-    <h3><i class="fa-solid fa-circle-user"></i> </h3>
-    <p><i class="fa-solid fa-envelope"></i> </p>
-    <p><i class="fa-solid fa-phone"></i> </p>
-    <span><i class="fa-solid fa-star"></i> </span>
-</artcile>
+<div class="{status}">
+    <b><i class="fa-solid fa-circle-user"></i> {first_name} {last_name}</b>
+    <hr>
+    <p><i class="fa-solid fa-envelope"></i> {email}</p>
+    <p><i class="fa-solid fa-phone"></i> {phone_number}</p>
+    <hr>
+    <span><i class="fa-solid fa-star"></i>{rating}</span>
+</div>
 
 
 <style>
-    artcile {
+    div {
         background-color: white;
         border-radius: 5px;
         margin: 1em;
@@ -26,8 +31,11 @@
         width: 250px;
         box-shadow: 0 0 4px 0 rgb(105, 105, 105);
     }
-    h3 {
+    b {
         font-size: 1.5em;
+    }
+    hr {
+        width: 100%;
     }
     span {
         margin-left: auto;

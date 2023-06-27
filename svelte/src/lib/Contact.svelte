@@ -6,8 +6,7 @@
 
 
 <!-- Affichage d'un contact simplement -->
-<!-- TODO : Insérer le nom et prénom dans la balise p -->
-<p class="contact"></p>
+<p class="contact">{first_name} {last_name}</p>
 
 
 <style>

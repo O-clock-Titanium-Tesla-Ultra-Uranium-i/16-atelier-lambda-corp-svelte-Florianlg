@@ -1,39 +1,62 @@
 <script>
-    let email;
-    let pwd;
+    // On préremplie les valeurs pour ne pas avoir à les taper dans le navigateur ;)
+    let email = "bot@example.com";
+    let pwd = "1234";
+
+
+    // Méga Bonus
+    // Crée un dispatcher pour remonter des événements à App
+    import { createEventDispatcher } from 'svelte';
+    const dispatch = createEventDispatcher();
+
 
     const onSubmit = async (event) => {
-        // TODO : Extraire les valeurs des inputs dans les variables email et pwd
-        // TODO : Les afficher dans la console
+        // On oublie pas que le navigateur veut recharger la page à la soumission d'un formulaire...
+        // Du coup on le bloque
+        event.preventDefault()
 
+        // Les valeur sont 'bindées' par Svelte, donc j'ai rien à faire !
+        // Ca devient presque magique :)
+        console.log(email, pwd);
 
-        // TODO : Récupère le token via l'api
-        // et le stocker dans le localstorage
+        // Récupère le token via l'api
+        let token = await getToken();
 
-    };
+        // Stocke le token dans le localstorage
+        window.localStorage.setItem('token', token);
+    
+        // Méga Bonus
+        // Génère un événement submit au niveau du composant
+        dispatch('submit');
+    }
 
     // Fonction d'authentification à l'api
     async function getToken () {
-        // TODO : Ecrire la requête d'authentification à l'api
-        
-        // L'url de directus se trouve dans les variables d'environnement
-        console.log(import.meta.env.VITE_URL_DIRECTUS);
-        
-        // TODO : Extraire et retourner le token
+        const r = await fetch(import.meta.env.VITE_URL_DIRECTUS + "auth/login", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+                password: pwd
+            })
+        })
+
+        // Extrait le json de la réponse
+        const json = await r.json()
+        // Extrait le token de la réponse
+        return json.data.access_token
     }
 </script>
 
 
 <!-- Formulaire de connexion -->
-<!-- TODO : brancher la fonction onSubmit sur le formulaire 
-Exemple : https://svelte.dev/repl/8eb540552faa4651a398b182fa5cdd48?version=3.24.1 -->
-<form>
+<form on:submit={onSubmit}>
     <label for="email">Email</label>
-    <!-- TODO : brancher la variable email sur l'attribut value (https://svelte.dev/tutorial/text-inputs)-->
-    <input type="mail" id="email" name="email">
+    <input type="mail" id="email" name="email" bind:value={email}>
     <label for="pwd">Mot de passe</label>
-    <!-- TODO : brancher la variable pwd sur l'attribut value (https://svelte.dev/tutorial/text-inputs)-->
-    <input type="password" id="pwd" name="password">
+    <input type="password" id="pwd" name="password" bind:value={pwd}>
     <button>Se connecter</button>
 </form>
 
